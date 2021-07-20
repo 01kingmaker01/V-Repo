@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AnimationRevealPage from "../helpers/AnimationRevealPage.js";
 import { Container, ContentWithPaddingXl } from "../components/misc/Layouts";
 import tw from "twin.macro";
@@ -9,6 +9,8 @@ import Footer from "../components/footers/FiveColumnWithInputForm.js";
 import { SectionHeading } from "../components/misc/Headings";
 import { PrimaryButton } from "../components/misc/Buttons";
 import Hero from "../components/hero/BackgroundAsImageWithCenteredContent.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getPost } from "actions/index.js";
 
 const HeadingRow = tw.div`flex`;
 const Heading = tw(SectionHeading)`text-gray-900`;
@@ -50,7 +52,7 @@ const Description = tw.div``;
 const ButtonContainer = tw.div`flex justify-center`;
 const LoadMoreButton = tw(PrimaryButton)`mt-16 mx-auto`;
 
-export default ({
+export const VRepo = ({
   headingText = "Recent Events",
   posts = [
     {
@@ -92,6 +94,19 @@ export default ({
   const onLoadMoreClick = () => {
     setVisible((v) => v + 6);
   };
+
+  const dispatch = useDispatch();
+
+  const { postsReducer } = useSelector((state) => {
+    return state;
+  });
+
+  console.log(postsReducer);
+
+  useEffect(() => {
+    return dispatch(getPost());
+  }, [dispatch]);
+
   return (
     <AnimationRevealPage>
       {/* <Header /> */}

@@ -1,11 +1,13 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import App from "./App";
 import Modal from "react-modal";
-
+import { Provider } from "react-redux";
+import { render } from "react-dom";
+import { store } from "./store";
 Modal.setAppElement("#root");
-
-ReactDOM.render(
-  <App />,
+render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById("root")
 );
