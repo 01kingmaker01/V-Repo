@@ -75,9 +75,9 @@ const Home = () => {
   }, [dispatch]);
 
   return !user ? (
-    <Form />
+    <Login />
   ) : (
-    // <Login />
+    // <Form />
     <AnimationRevealPage>
       <Hero />
       <Container>
@@ -98,7 +98,9 @@ const Home = () => {
                       <Image imageSrc={post.add_image} />
                       <Info>
                         <Category>{post.committee}</Category>
-                        <CreationDate>{post.author}</CreationDate>
+                        <CreationDate>
+                          {post.created_at.toString()}
+                        </CreationDate>
                         {/*  repalce author with date*/}
                         <Title>{post.title}</Title>
                         {post.description && (

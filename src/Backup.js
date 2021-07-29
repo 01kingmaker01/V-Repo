@@ -59,81 +59,85 @@ const Description = tw.div``;
 const ButtonContainer = tw.div`flex justify-center`;
 const LoadMoreButton = tw(PrimaryButton)`mt-16 mx-auto`;
 
-const App = () => {
-  const dispatch = useDispatch();
-
-  const {
-    postsReducer: { previous, next, results: postsData },
-  } = useSelector((state) => {
-    return state;
-  });
-  console.log({ previous, next, posts: postsData });
-  var user = "Ketan";
-
-  useEffect(() => {
-    return dispatch(getPost());
-  }, [dispatch]);
-
-  return !user ? (
-    <Form />
-  ) : (
-    // <Login />
+export const BackUp = ({
+  headingText = "Blog Posts",
+  posts = [
+    {
+      imageSrc:
+        "https://images.unsplash.com/photo-1499678329028-101435549a4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&q=80",
+      category: " DSC",
+      date: "April 21, 2020",
+      title: "👑DSC-VIT 2021-2022 INTERVIEWS 👑 ",
+      description: `
+  
+        In these unexpected and challenging times, it's your time to shine⚡
+        
+        
+        
+        In these unexpected and challenging times, it's your time to shine⚡
+        Here's a great opportunity for you to come to join The DSC - VIT! With the portrayal of leadership, integrity, empathy, and courage, take on this venture to become the 
+        leaders of tomorrow!✨💪🏻
+        
+        `,
+      url: "https://www.instagram.com/dsc.vit/",
+      featured: true,
+    },
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+    getPlaceholderPost(),
+  ],
+}) => {
+  const [visible, setVisible] = useState(7);
+  const onLoadMoreClick = () => {
+    setVisible((v) => v + 6);
+  };
+  return (
     <AnimationRevealPage>
       <Hero />
       <Container>
         <ContentWithPaddingXl>
           <HeadingRow>
-            <Heading>Recent Events</Heading>
+            <Heading>{headingText}</Heading>
           </HeadingRow>
           <Posts>
-            {postsData &&
-              postsData.map((post, index) => {
-                console.log({ post, index });
-                return (
-                  <PostContainer
-                    key={index}
-                    featured={index === 0 ? true : false}
-                  >
-                    <Post className="group" as="a">
-                      <Image imageSrc={post.add_image} />
-                      <Info>
-                        <Category>{post.committee}</Category>
-                        <CreationDate>{post.author}</CreationDate>
-                        {/*  repalce author with date*/}
-                        <Title>{post.title}</Title>
-                        {post.description && (
-                          <Description>{post.description}</Description>
-                        )}
-                      </Info>
-                    </Post>
-                  </PostContainer>
-                );
-              })}
+            {posts.slice(0, visible).map((post, index) => (
+              <PostContainer key={index} featured={post.featured}>
+                <Post className="group" as="a" href={post.url}>
+                  <Image imageSrc={post.imageSrc} />
+                  <Info>
+                    <Category>{post.category}</Category>
+                    <CreationDate>{post.date}</CreationDate>
+                    <Title>{post.title}</Title>
+                    {post.featured && post.description && (
+                      <Description>{post.description}</Description>
+                    )}
+                  </Info>
+                </Post>
+              </PostContainer>
+            ))}
           </Posts>
-
-          <ButtonContainer>
-            {previous ? (
-              <LoadMoreButton
-                onClick={() => {
-                  console.log("Clicked Previous");
-                  return dispatch(getPost(previous));
-                }}
-              >
-                Previous
+          {visible < posts.length && (
+            <ButtonContainer>
+              <LoadMoreButton onClick={onLoadMoreClick}>
+                Load More
               </LoadMoreButton>
-            ) : null}
-
-            {next ? (
-              <LoadMoreButton
-                onClick={() => {
-                  console.log("Clicked Next");
-                  return dispatch(getPost(next));
-                }}
-              >
-                Next
-              </LoadMoreButton>
-            ) : null}
-          </ButtonContainer>
+            </ButtonContainer>
+          )}
         </ContentWithPaddingXl>
       </Container>
       <Footer />
@@ -149,61 +153,7 @@ const getPlaceholderPost = () => ({
   title: "Visit the beautiful Alps in Switzerland",
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-  url: "https://reddit.com",
+  url: "https://www.instagram.com/dsc.vit/",
 });
 
-const posts = [
-  {
-    imageSrc:
-      "https://images.unsplash.com/photo-1499678329028-101435549a4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1024&q=80",
-    category: " ITSA",
-    date: "April 21, 2020",
-    title: "👑ISTE-VIT 2021-2022 INTERVIEWS 👑 ",
-    description: `
-
-      In these unexpected and challenging times, it's your time to shine⚡
-      
-      Here's a great opportunity for you to come to join THE INDIAN SOCIETY FOR TECHNICAL EDUCATION - VIT! With the portrayal of leadership, integrity, empathy, and courage, take on this venture to become the 
-      leaders of tomorrow!✨💪🏻
-      
-      In these unexpected and challenging times, it's your time to shine⚡
-      Here's a great opportunity for you to come to join THE INDIAN SOCIETY FOR TECHNICAL EDUCATION - VIT! With the portrayal of leadership, integrity, empathy, and courage, take on this venture to become the 
-      leaders of tomorrow!✨💪🏻
-
-      In these unexpected and challenging times, it's your time to shine⚡
-      Here's a great opportunity for you to come to join THE INDIAN SOCIETY FOR TECHNICAL EDUCATION - VIT! With the portrayal of leadership, integrity, empathy, and courage, take on this venture to become the 
-      leaders of tomorrow!✨💪🏻
-
-      In these unexpected and challenging times, it's your time to shine⚡
-      Here's a great opportunity for you to come to join THE INDIAN SOCIETY FOR TECHNICAL EDUCATION - VIT! With the portrayal of leadership, integrity, empathy, and courage, take on this venture to become the 
-      leaders of tomorrow!✨💪🏻
-      
-      In these unexpected and challenging times, it's your time to shine⚡
-      Here's a great opportunity for you to come to join THE INDIAN SOCIETY FOR TECHNICAL EDUCATION - VIT! With the portrayal of leadership, integrity, empathy, and courage, take on this venture to become the 
-      leaders of tomorrow!✨💪🏻
-      
-      `,
-    url: "https://timerse.com",
-    featured: true,
-  },
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-  getPlaceholderPost(),
-];
-
-export default App;
+export default BackUp;

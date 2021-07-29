@@ -28,13 +28,13 @@ export const NavLink = tw.a`
 
 export const PrimaryLink = tw(NavLink)`
   lg:mx-0
-  px-8 py-3 rounded bg-primary-500 text-gray-100
+  px-8 py-3 rounded bg-primary-500 text-white
   hocus:bg-primary-700 hocus:text-gray-200 focus:shadow-outline
   border-b-0
 `;
 
 export const LogoLink = styled(NavLink)`
-  ${tw`flex items-center h-10 font-black border-b-0 text-2xl! ml-0!`};
+  ${tw`flex items-center h-10 text-white border-b-0 text-2xl! ml-0!`};
 
   img {
     ${tw`w-32 rounded mr-3`}
@@ -85,7 +85,7 @@ export default ({
       <NavLink href="/#" tw="lg:ml-12!">
         Login
       </NavLink>
-      <PrimaryLink css={roundedHeaderButton && tw`rounded-full`} href="/#">
+      <PrimaryLink css={tw`text-white! `} href="/#">
         Sign Up
       </PrimaryLink>
     </NavLinks>,

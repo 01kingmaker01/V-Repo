@@ -1,7 +1,7 @@
 import { Form } from "components/Form";
 import Home from "components/Home";
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+// import { Route, Switch } from "react-router-dom";
 
 const App = () => {
   return (

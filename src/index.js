@@ -15,10 +15,10 @@ render(
     <ConnectedRouter history={history}>
       <>
         <Switch>
-          <Route exact path="/posts" component={Home} />
+          <Route exact path="/" component={Home} />
         </Switch>
         <Switch>
-          <Route exact path="/posts/add" component={Form} />
+          <Route exact path="/add" component={Form} />
         </Switch>
       </>
     </ConnectedRouter>

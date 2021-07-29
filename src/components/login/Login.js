@@ -15,14 +15,12 @@ const Login = () => {
 
       const token = await auth?.currentUser?.getIdToken(true);
       console.log(results);
-      console.log({ token });
       if (token) {
         localStorage.setItem("@token", token);
       }
 
       return dispatch({
         type: SET_USER,
-        // userPayload: { uid, displayName, email, photoURL },
       });
     } catch (error) {
       console.error(error);

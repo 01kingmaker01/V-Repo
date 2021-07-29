@@ -1,0 +1,24 @@
+input[type="file"]::file-selector-button {
+  margin-left: 2px;
+  border: 2px solid #f7fafc;
+  width: 7.5rem;
+  padding: 0.05rem;
+  border-radius: 0.2rem;
+  color: #f7fafc;
+  background: #6415ff;
+  letter-spacing: 0.025em;
+  transition-duration: 200ms;
+  cursor: pointer;
+}
+input[type="file"]::file-selector-button:focus {
+  outline: none;
+  box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.69);
+  /* inset 0 0 0px 7px rgb(0, 255, 20); */
+}
+
+input[type="file"]::file-selector-button:hover {
+  box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.69);
+  /* inset 0 0 0px 7px rgb(0, 255, 20); */
+  transform: translateY(-2px);
+  outline: none;
+}
