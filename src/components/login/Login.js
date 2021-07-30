@@ -9,18 +9,23 @@ const Login = () => {
   const signIn = async () => {
     try {
       const results = await auth.signInWithPopup(provider);
-      //  {
-      //   user: { uid, displayName, email, photoURL },
-      // },
 
       const token = await auth?.currentUser?.getIdToken(true);
-      console.log(results);
       if (token) {
         localStorage.setItem("@token", token);
       }
-
+      const { email, mobilePhone, photoURL, displayName, uid } = results.user;
+      const jobTitle = results.additionalUserInfo.profile.jobTitle;
       return dispatch({
         type: SET_USER,
+        userPayload: {
+          email,
+          mobilePhone,
+          photoURL,
+          displayName,
+          uid,
+          jobTitle,
+        },
       });
     } catch (error) {
       console.error(error);
@@ -29,7 +34,6 @@ const Login = () => {
   return (
     <div className="login">
       <div className="login_logo">
-        {/* <img src="" alt="microsoft_logo" /> */}
         <img
           src="https://www.logo.wine/a/logo/Microsoft/Microsoft-Logo.wine.svg"
           alt="Microfoft"

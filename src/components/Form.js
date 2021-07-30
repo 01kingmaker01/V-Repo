@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
 import { ReactComponent as SvgDotPatternIcon } from "../images/dot-pattern.svg";
 import "../styles/input.css";
+import { makePost } from "../actions";
 
 import Header, {
   NavLink,
@@ -55,11 +57,35 @@ const TextArea = tw.textarea`h-24 sm:h-full resize-none`;
 
 const SubmitButton = tw.button`w-full sm:w-32 mt-6 py-3 bg-gray-100 text-primary-500 rounded-full font-bold tracking-wide shadow-lg uppercase text-sm transition duration-300 transform focus:outline-none focus:shadow-outline hover:bg-gray-300 hover:text-primary-700 hocus:-translate-y-px hocus:shadow-xl`;
 
-const SvgDotPattern1 = tw(
-  SvgDotPatternIcon
-)`absolute bottom-0 right-0 transform translate-y-1/2 translate-x-1/2 -z-10 opacity-50 text-primary-500 fill-current w-24`;
-
 export const Form = () => {
+  const [form, setForm] = useState({
+    title: "",
+    committee: "",
+    description: "",
+    images: [],
+    file: [],
+  });
+
+  console.log(form);
+
+  const dispatch = useDispatch();
+
+  const clear = () => {
+    setForm({
+      title: "",
+      committee: "",
+      description: "",
+      images: [],
+      file: [],
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(makePost(form));
+    clear();
+  };
+
   return (
     <Container>
       <StyledHeader />
@@ -73,6 +99,8 @@ export const Form = () => {
                   <InputContainer>
                     <Label htmlFor="Title">Title</Label>
                     <Input
+                      value={form.title}
+                      onChange={(e) => ({ ...form, title: e.target.value })}
                       id="Title"
                       type="text"
                       name="Title"
@@ -82,8 +110,10 @@ export const Form = () => {
                   <InputContainer>
                     <Label htmlFor="Committee">Committee</Label>
                     <Input
+                      value={form.committee}
+                      onChange={(e) => ({ ...form, committee: e.target.value })}
+                      type="text"
                       id="Committee"
-                      type="email"
                       name="Committee"
                       placeholder="E.g. ITSA "
                     />
@@ -93,6 +123,11 @@ export const Form = () => {
                   <InputContainer tw="flex-1">
                     <Label htmlFor="Description">Description</Label>
                     <TextArea
+                      value={form.description}
+                      onChange={(e) => ({
+                        ...form,
+                        description: e.target.value,
+                      })}
                       id="Description"
                       name="Description"
                       placeholder="E.g. Details about your event/repo"
@@ -102,6 +137,8 @@ export const Form = () => {
                   <InputContainer>
                     <Label htmlFor="img">Only Images</Label>
                     <Input
+                      value={form.images}
+                      onChange={(e) => ({ ...form, images: e.target.value })}
                       accept="image/*"
                       id="img"
                       type="file"
@@ -114,6 +151,8 @@ export const Form = () => {
                   <InputContainer>
                     <Label htmlFor="pdfFile">Attachment File</Label>
                     <Input
+                      value={form.file}
+                      onChange={(e) => ({ ...form, file: e.target.value })}
                       id="pdfFile"
                       type="file"
                       name="pdfFile"
@@ -125,12 +164,11 @@ export const Form = () => {
                 </Column>
               </TwoColumn>
 
-              <SubmitButton type="submit" value="Submit">
+              <SubmitButton onClick={handleSubmit} type="submit" value="Submit">
                 Submit
               </SubmitButton>
             </form>
           </div>
-          {/* <SvgDotPattern1 /> */}
         </FormContainer>
       </Content>
     </Container>

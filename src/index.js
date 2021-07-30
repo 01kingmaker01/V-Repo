@@ -6,8 +6,8 @@ import { render } from "react-dom";
 import { history, store } from "./store";
 import { ConnectedRouter } from "connected-react-router";
 import { Route, Switch } from "react-router";
-import Home from "components/Home";
 import { Form } from "components/Form";
+import Home from "components/Home";
 Modal.setAppElement("#root");
 
 render(
