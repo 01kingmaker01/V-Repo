@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
 import tw from "twin.macro";
-import styled from "styled-components";
-import { css } from "styled-components/macro";
 
 import AnimationRevealPage from "../helpers/AnimationRevealPage";
 import Hero from "./hero/BackgroundAsImageWithCenteredContent";
@@ -39,6 +37,7 @@ const Home = () => {
   }, [dispatch, userReducer]);
 
   console.log({ userReducer, postsData });
+
   return (
     <>
       {!userReducer || userReducer === "" ? (
@@ -86,4 +85,5 @@ const Home = () => {
     </>
   );
 };
+
 export default Home;

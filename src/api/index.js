@@ -13,6 +13,7 @@ export const fetchPosts = (link) => {
 export const createPost = (newPost) => {
   return axios.post(url, newPost, {
     headers: {
+      "Content-Type": "multipart/form-data ",
       Authorization: "Bearer " + localStorage.getItem("@token"),
       data: localStorage.getItem("@uid"),
     },

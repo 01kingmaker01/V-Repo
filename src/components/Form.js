@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import tw from "twin.macro";
 import { css } from "styled-components/macro"; //eslint-disable-line
@@ -15,6 +15,7 @@ import Header, {
   NavToggle,
   DesktopNavLinks,
 } from "./headers/light.js";
+import { useHistory } from "react-router";
 
 const StyledHeader = styled(Header)`
   ${tw`pt-8 text-black px-10 max-w-none w-full`}
@@ -58,6 +59,9 @@ const TextArea = tw.textarea`h-24 sm:h-full resize-none`;
 const SubmitButton = tw.button`w-full sm:w-32 mt-6 py-3 bg-gray-100 text-primary-500 rounded-full font-bold tracking-wide shadow-lg uppercase text-sm transition duration-300 transform focus:outline-none focus:shadow-outline hover:bg-gray-300 hover:text-primary-700 hocus:-translate-y-px hocus:shadow-xl`;
 
 export const Form = () => {
+  const { userReducer } = useSelector((state) => {
+    return state;
+  });
   const [form, setForm] = useState({
     title: "",
     committee: "",
@@ -69,7 +73,7 @@ export const Form = () => {
   console.log(form);
 
   const dispatch = useDispatch();
-
+  const history = useHistory();
   const clear = () => {
     setForm({
       title: "",
@@ -79,11 +83,20 @@ export const Form = () => {
       file: [],
     });
   };
-
+  console.log({ img: form.images });
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(makePost(form));
-    clear();
+    try {
+      e.preventDefault();
+      const formObj = new FormData();
+      formObj.append("title", form.title);
+      formObj.append("committee", form.description);
+      formObj.append("author", userReducer.displayName);
+      formObj.append("image", form.images);
+      dispatch(makePost(formObj));
+      history.push("/");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -100,7 +113,9 @@ export const Form = () => {
                     <Label htmlFor="Title">Title</Label>
                     <Input
                       value={form.title}
-                      onChange={(e) => ({ ...form, title: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, title: e.target.value })
+                      }
                       id="Title"
                       type="text"
                       name="Title"
@@ -111,7 +126,9 @@ export const Form = () => {
                     <Label htmlFor="Committee">Committee</Label>
                     <Input
                       value={form.committee}
-                      onChange={(e) => ({ ...form, committee: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, committee: e.target.value })
+                      }
                       type="text"
                       id="Committee"
                       name="Committee"
@@ -124,10 +141,12 @@ export const Form = () => {
                     <Label htmlFor="Description">Description</Label>
                     <TextArea
                       value={form.description}
-                      onChange={(e) => ({
-                        ...form,
-                        description: e.target.value,
-                      })}
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          description: e.target.value,
+                        })
+                      }
                       id="Description"
                       name="Description"
                       placeholder="E.g. Details about your event/repo"
@@ -137,8 +156,9 @@ export const Form = () => {
                   <InputContainer>
                     <Label htmlFor="img">Only Images</Label>
                     <Input
-                      value={form.images}
-                      onChange={(e) => ({ ...form, images: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, images: e.target.files[0] })
+                      }
                       accept="image/*"
                       id="img"
                       type="file"
@@ -151,8 +171,9 @@ export const Form = () => {
                   <InputContainer>
                     <Label htmlFor="pdfFile">Attachment File</Label>
                     <Input
-                      value={form.file}
-                      onChange={(e) => ({ ...form, file: e.target.value })}
+                      onChange={(e) =>
+                        setForm({ ...form, file: e.target.files[0] })
+                      }
                       id="pdfFile"
                       type="file"
                       name="pdfFile"

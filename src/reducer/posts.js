@@ -1,4 +1,4 @@
-import { CREATE, DELETE, FETCH_ALL, UPDATE } from "../constants";
+import { CREATE, FETCH_ALL } from "../constants";
 
 export const postsReducer = (state = [], { type, postsPayload }) => {
   switch (type) {

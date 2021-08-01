@@ -1,27 +1,14 @@
 import React from "react";
-import App from "./App";
 import Modal from "react-modal";
 import { Provider } from "react-redux";
 import { render } from "react-dom";
-import { history, store } from "./store";
-import { ConnectedRouter } from "connected-react-router";
-import { Route, Switch } from "react-router";
-import { Form } from "components/Form";
-import Home from "components/Home";
+import { store } from "./store";
+import App from "App";
 Modal.setAppElement("#root");
 
 render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <>
-        <Switch>
-          <Route exact path="/" component={Home} />
-        </Switch>
-        <Switch>
-          <Route exact path="/add" component={Form} />
-        </Switch>
-      </>
-    </ConnectedRouter>
+    <App />
   </Provider>,
   document.getElementById("root")
 );

@@ -1,18 +1,22 @@
-import { Form } from "components/Form";
-import Home from "components/HomeBackUp";
 import React from "react";
-// import { Route, Switch } from "react-router-dom";
+import { history } from "./store";
+import { ConnectedRouter } from "connected-react-router";
+import { Route, Switch } from "react-router";
+import { Form } from "components/Form";
+import Home from "components/Home";
 
 const App = () => {
   return (
-    <Home />
-    // <div className="App">
-    //   <Switch>
-    //     <Route path="/" component={Home} exact />
-    //     <Route path="/add" component={Form} exact />
-    //     {/* <Route path="/edit/:id" component={EditEmployee} exact /> */}
-    //   </Switch>
-    // </div>
+    <ConnectedRouter history={history}>
+      <>
+        <Switch>
+          <Route exact path="/" component={Home} />
+        </Switch>
+        <Switch>
+          <Route exact path="/add" component={Form} />
+        </Switch>
+      </>
+    </ConnectedRouter>
   );
 };
 
