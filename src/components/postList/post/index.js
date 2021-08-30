@@ -1,5 +1,5 @@
 import React from "react";
-import "tailwindcss/dist/base.css";
+// import "tailwindcss/dist/base.css";
 import tw from "twin.macro";
 import styled from "styled-components";
 import { css } from "styled-components/macro";

@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
+import React, { lazy, useEffect, Suspense, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import tw from "twin.macro";
 
 import "tailwindcss/dist/base.css";
 import "styles/globalStyles.css";
-import tw from "twin.macro";
 
 import AnimationRevealPage from "../helpers/AnimationRevealPage";
 import Hero from "./hero/BackgroundAsImageWithCenteredContent";
@@ -14,8 +14,10 @@ import { SectionHeading } from "./misc/Headings";
 import { PrimaryButton } from "./misc/Buttons";
 
 import { getPost } from "../actions";
-import Login from "./login/Login";
 import { PostList } from "./postList";
+import { useLocation } from "react-router";
+
+const ModalCon = lazy(() => import("./Modal"));
 
 const HeadingRow = tw.div`flex`;
 const Heading = tw(SectionHeading)`text-gray-900`;
@@ -23,6 +25,7 @@ const ButtonContainer = tw.div`flex justify-center`;
 const LoadMoreButton = tw(PrimaryButton)`mt-16 mx-auto`;
 
 const Home = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const {
@@ -36,51 +39,60 @@ const Home = () => {
     return userReducer ? dispatch(getPost()) : null;
   }, [dispatch, userReducer]);
 
-  console.log({ userReducer, postsData });
+  const [modalIsOpen, setModalIsOpen] = useState(true);
+
+  const toggleModal = () => setModalIsOpen(!modalIsOpen);
 
   return (
     <>
-      {!userReducer || userReducer === "" ? (
-        <Login />
-      ) : (
-        <AnimationRevealPage>
-          <Hero />
-          <Container>
-            <ContentWithPaddingXl>
-              <HeadingRow>
-                <Heading>Recent Events</Heading>
-              </HeadingRow>
+      <AnimationRevealPage>
+        <Hero />
+        {location?.state?.msg ? (
+          <>
+            <Suspense fallback={<div>Loading...</div>}>
+              <ModalCon
+                modalIsOpen={modalIsOpen}
+                msg={location?.state?.msg}
+                toggleModal={toggleModal}
+              />
+            </Suspense>
+          </>
+        ) : null}
+        <Container>
+          <ContentWithPaddingXl>
+            <HeadingRow>
+              <Heading>Recent Events</Heading>
+            </HeadingRow>
 
-              <PostList postsData={postsData} />
+            <PostList postsData={postsData} />
 
-              <ButtonContainer>
-                {previous && (
-                  <LoadMoreButton
-                    onClick={() => {
-                      console.log("Clicked Previous");
-                      return dispatch(getPost(previous));
-                    }}
-                  >
-                    Previous
-                  </LoadMoreButton>
-                )}
+            <ButtonContainer>
+              {previous && (
+                <LoadMoreButton
+                  onClick={() => {
+                    console.log("Clicked Previous");
+                    return dispatch(getPost(previous));
+                  }}
+                >
+                  Previous
+                </LoadMoreButton>
+              )}
 
-                {next && (
-                  <LoadMoreButton
-                    onClick={() => {
-                      console.log("Clicked Next");
-                      return dispatch(getPost(next));
-                    }}
-                  >
-                    Next
-                  </LoadMoreButton>
-                )}
-              </ButtonContainer>
-            </ContentWithPaddingXl>
-          </Container>
-          <Footer />
-        </AnimationRevealPage>
-      )}
+              {next && (
+                <LoadMoreButton
+                  onClick={() => {
+                    console.log("Clicked Next");
+                    return dispatch(getPost(next));
+                  }}
+                >
+                  Next
+                </LoadMoreButton>
+              )}
+            </ButtonContainer>
+          </ContentWithPaddingXl>
+        </Container>
+        <Footer />
+      </AnimationRevealPage>
       ;
     </>
   );

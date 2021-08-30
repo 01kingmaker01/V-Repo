@@ -1,7 +1,7 @@
-import React from "react";
+import React, { lazy } from "react";
 import { useDispatch } from "react-redux";
-import { SET_USER } from "../../constants";
-import { auth, provider } from "../../firebase";
+import { SET_USER } from "../constants";
+import { auth, provider } from "../firebase";
 import AnimationRevealPage from "helpers/AnimationRevealPage.js";
 import { Container as ContainerBase } from "components/misc/Layouts";
 import tw from "twin.macro";
@@ -10,6 +10,10 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 import logo from "images/logo_vit.png";
 import ms from "images/ms.svg";
 import DesignIllustration from "images/design-illustration.svg";
+import { useHistory, useLocation } from "react-router";
+import { useState } from "react";
+import { Suspense } from "react";
+const ModalCon = lazy(() => import("./Modal"));
 
 const Container = tw(
   ContainerBase
@@ -35,34 +39,58 @@ const SocialButton = styled.button`
 
 const Login = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const location = useLocation();
 
   const signIn = async () => {
     try {
       const results = await auth.signInWithPopup(provider);
 
       const token = await auth?.currentUser?.getIdToken(true);
+
+      const { email, mobilePhone, photoURL, displayName, uid } = results.user;
+      const jobTitle = await results.additionalUserInfo.profile.jobTitle;
+      const userData = {
+        email,
+        mobilePhone,
+        photoURL,
+        displayName,
+        uid,
+        jobTitle,
+        // jobTitle: "Professor",
+      };
+      console.log(userData);
       if (token) {
         localStorage.setItem("@token", token);
+        localStorage.setItem("@user", JSON.stringify(userData));
       }
-      const { email, mobilePhone, photoURL, displayName, uid } = results.user;
-      const jobTitle = results.additionalUserInfo.profile.jobTitle;
-      return dispatch({
+      dispatch({
         type: SET_USER,
-        userPayload: {
-          email,
-          mobilePhone,
-          photoURL,
-          displayName,
-          uid,
-          jobTitle,
-        },
+        userPayload: userData,
       });
+      history.push("/");
     } catch (error) {
       console.error(error);
     }
   };
+
+  const [modalIsOpen, setModalIsOpen] = useState(true);
+
+  const toggleModal = () => setModalIsOpen(!modalIsOpen);
+
   return (
     <AnimationRevealPage>
+      {location?.state?.msg ? (
+        <>
+          <Suspense fallback={<div>Loading...</div>}>
+            <ModalCon
+              modalIsOpen={modalIsOpen}
+              msg={location?.state?.msg}
+              toggleModal={toggleModal}
+            />
+          </Suspense>
+        </>
+      ) : null}
       <Container>
         <Content>
           <MainContainer>

@@ -4,9 +4,6 @@
   "proxy": "http://127.0.0.1:8000",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.10",
-    "@testing-library/react": "^11.2.6",
-    "@testing-library/user-event": "^13.1.5",
     "axios": "^0.21.1",
     "connected-react-router": "^6.9.1",
     "feather-icons": "^4.28.0",
@@ -16,6 +13,7 @@
     "lodash.throttle": "^4.1.1",
     "react": "^17.0.2",
     "react-modal": "^3.13.1",
+    "react-parallax-tilt": "^1.5.54",
     "react-redux": "^7.2.4",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",

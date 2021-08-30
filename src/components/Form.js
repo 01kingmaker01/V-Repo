@@ -2,25 +2,21 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import tw from "twin.macro";
-import { css } from "styled-components/macro"; //eslint-disable-line
-import { ReactComponent as SvgDotPatternIcon } from "../images/dot-pattern.svg";
-import "../styles/input.css";
+import { useHistory } from "react-router";
 import { makePost } from "../actions";
+import "styles/input.css";
 
 import Header, {
-  NavLink,
-  NavLinks,
-  PrimaryLink as PrimaryLinkBase,
+  NavLinkCon,
   LogoLink,
   NavToggle,
   DesktopNavLinks,
 } from "./headers/light.js";
-import { useHistory } from "react-router";
 
-const StyledHeader = styled(Header)`
+export const StyledHeader = styled(Header)`
   ${tw`pt-8 text-black px-10 max-w-none w-full`}
-  ${DesktopNavLinks} ${NavLink}, ${LogoLink} {
-    ${tw`text-black hover:border-gray-300 hover:text-gray-300`}
+  ${DesktopNavLinks} ${NavLinkCon}, ${LogoLink} {
+    ${tw`text-black hover:border-primary-500 hover:text-primary-500`}
   }
   ${NavToggle}.closed {
     ${tw`text-black hover:text-primary-500`}
@@ -70,20 +66,9 @@ export const Form = () => {
     file: [],
   });
 
-  console.log(form);
-
   const dispatch = useDispatch();
   const history = useHistory();
-  const clear = () => {
-    setForm({
-      title: "",
-      committee: "",
-      description: "",
-      images: [],
-      file: [],
-    });
-  };
-  console.log({ img: form.images });
+
   const handleSubmit = (e) => {
     try {
       e.preventDefault();

@@ -1,5 +1,17 @@
 import { createPost, fetchPosts } from "api";
-import { CREATE, FETCH_ALL } from "../constants";
+import { CREATE, FETCH_ALL, SET_USER } from "../constants";
+
+export const checkUserData = () => async (dispatch) => {
+  try {
+    const userData = localStorage.getItem("@user");
+    dispatch({
+      type: SET_USER,
+      userPayload: JSON.parse(userData),
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const getPost = (btn) => async (dispatch) => {
   try {
