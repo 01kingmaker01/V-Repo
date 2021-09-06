@@ -4,7 +4,6 @@ import { Provider } from "react-redux";
 import { render } from "react-dom";
 import { store } from "./store";
 import App from "App";
-import { Departments } from "components/Departments";
 Modal.setAppElement("#root");
 
 render(

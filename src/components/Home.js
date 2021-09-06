@@ -8,7 +8,8 @@ import "styles/globalStyles.css";
 import AnimationRevealPage from "../helpers/AnimationRevealPage";
 import Hero from "./hero/BackgroundAsImageWithCenteredContent";
 import { Container, ContentWithPaddingXl } from "./misc/Layouts";
-import Footer from "./footers/FiveColumnWithInputForm";
+import Footer from "./footers/footer";
+import whiteLogo from "../images/vrepo_.svg";
 
 import { SectionHeading } from "./misc/Headings";
 import { PrimaryButton } from "./misc/Buttons";
@@ -46,7 +47,7 @@ const Home = () => {
   return (
     <>
       <AnimationRevealPage>
-        <Hero />
+        <Hero logoSvg={whiteLogo} />
         {location?.state?.msg ? (
           <>
             <Suspense fallback={<div>Loading...</div>}>
@@ -91,9 +92,8 @@ const Home = () => {
             </ButtonContainer>
           </ContentWithPaddingXl>
         </Container>
-        <Footer />
+        <Footer margin={"-mx-8"} />
       </AnimationRevealPage>
-      ;
     </>
   );
 };

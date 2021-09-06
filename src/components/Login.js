@@ -45,7 +45,7 @@ const Login = () => {
   const signIn = async () => {
     try {
       const results = await auth.signInWithPopup(provider);
-
+      console.log({ results });
       const token = await auth?.currentUser?.getIdToken(true);
 
       const { email, mobilePhone, photoURL, displayName, uid } = results.user;

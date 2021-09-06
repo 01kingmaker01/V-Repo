@@ -9,7 +9,7 @@ import { css } from "styled-components/macro"; //eslint-disable-line
 
 import useAnimatedNavToggler from "../../helpers/useAnimatedNavToggler.js";
 
-import logo from "../../images/vrepo.svg";
+import logo from "../../images/vrepo1.svg";
 import User from "images/user.png";
 import { ReactComponent as MenuIcon } from "feather-icons/dist/icons/menu.svg";
 import { ReactComponent as PhoneIcon } from "feather-icons/dist/icons/phone-call.svg";
@@ -36,20 +36,21 @@ pb-1 border-b-2 border-transparent  hover:border-primary-500 hocus:text-primary-
 
 // const ProfileCard = tw.div`bg-white rounded border flex py-4 px-8 absolute left-0 m-auto w-full `;
 
-const ProfileCard = styled.div`
-${tw`bg-white rounded-lg border flex flex-col py-8 px-8 absolute shadow-lg m-auto w-full`}
-    @media (max-width:1023px) {
-    left:0;
-    right:0;
-    bottom:-140%;
-    height:max-content;
-    min-width:13rem;}
-@media (min-width:1024px) {
-    top:6.5rem;
-    right:2rem;
-width:max-content    
-    }
-`
+const ProfileCard = motion(styled.div`
+  ${tw`bg-white rounded-lg z-10 border flex flex-col py-8 px-8 absolute shadow-2xl m-auto w-full transition duration-500 ease-in-out  transform`}
+  @media (max-width:1023px) {
+    left: 0;
+    right: 0;
+    bottom: -28rem;
+    height: max-content;
+    min-width: 13rem;
+  }
+  @media (min-width: 1024px) {
+    top: 6.5rem;
+    right: 2rem;
+    width: max-content;
+  }
+`);
 
 const UserImg = styled.div`
   ${tw`flex justify-center	 items-center	 mb-4 `};
@@ -88,12 +89,13 @@ svg{
 
 
 ${tw`mb-2 last:mb-0`}
-`
-const LineLabel = styled(Line)`  background: #f0e0ff;
-width:max-content;
+`;
+const LineLabel = styled(Line)`
+  background: #f0e0ff;
+  width: max-content;
 
-${tw`text-xs font-semibold inline-block py-2 px-4 uppercase rounded-full text-primary-900  uppercase `} `
-
+  ${tw`text-xs font-semibold inline-block py-2 px-4 uppercase rounded-full text-primary-900  uppercase `}
+`;
 
 export const PrimaryLink = tw(NavLinkCon)`
   lg:mx-0
@@ -112,18 +114,17 @@ font-semibold tracking-wide transition duration-300
 
 export const LogoLink = styled(NavLinkCon)`
   ${tw`flex items-center h-10 text-white border-b-0 text-2xl! mx-0`};
-
   img {
     ${tw`w-32 rounded`}
   }
 `;
 
-export const MobileNavLinksContainer = tw.nav`flex flex-1 items-center justify-between`;
+export const MobileNavLinksContainer = tw.nav`flex  flex-1 items-center justify-between`;
 export const NavToggle = tw.button`
-  lg:hidden z-20 focus:outline-none hocus:text-primary-500 transition duration-300
+  lg:hidden z-20  focus:outline-none hocus:text-primary-500 transition duration-300
 `;
 export const MobileNavLinks = motion(styled.div`
-  ${tw`lg:hidden z-10 shadow absolute top-0 inset-x-0 mx-4 my-6 p-8 border text-center rounded-lg text-gray-900 bg-white`}
+  ${tw`lg:hidden z-10 shadow-2xl absolute top-0 inset-x-0 mx-4 my-6 p-8 border text-center rounded-lg text-gray-900 bg-white`}
   ${NavLinks} {
     ${tw`flex flex-col items-center`}
   }
@@ -133,23 +134,24 @@ export const DesktopNavLinks = tw.nav`
   hidden lg:flex flex-1 justify-between items-center
 `;
 
-const IconCon = tw.div`w-8 p-1 h-10  flex-none flex items-center`
-
-;
-
-
+const IconCon = tw.div`w-8 p-1 h-10  flex-none flex items-center`;
 
 const Light = ({
-  logoLink,
+  white,
+  logoSvg,
+  phn,
   userIcon,
   className,
   collapseBreakpointClass = "lg",
 }) => {
-  const { userReducer } = useSelector((state) => {
-    return state;
-  });
+  console.log({ logoSvg });
   const history = useHistory();
   const dispatch = useDispatch();
+  const {
+    userReducer: { email, photoUrl, displayName, jobTitle },
+  } = useSelector((state) => {
+    return state;
+  });
 
   const signOut = async () => {
     await auth.signOut().then(() => {
@@ -160,42 +162,47 @@ const Light = ({
     });
   };
 
-  userIcon = userIcon || User;
+  userIcon = User || photoUrl;
+  phn = "---" || photoUrl;
 
   const [open, setOpen] = useState(false);
+
   const navbarItemList = (props) => {
     return (
       <>
         <a onClick={() => setOpen(!open)}>
-      <img style={{ height: "40px" }} src={userIcon} alt={"UserIcon"} /> 
+          <img style={{ height: "40px" }} src={userIcon} alt={"UserIcon"} />
         </a>
 
-         
         {open && (
-          <ProfileCard
-          >
+          <ProfileCard>
             <UserImg>
               <img src={userIcon} alt="userIcon" />
             </UserImg>
             <UserData>
               <Line>
-              <IconCon>
-              <UserIcon/>
-              </IconCon>Ketan Rajaram Chavan</Line>
+                <IconCon>
+                  <UserIcon />
+                </IconCon>
+                {displayName}
+              </Line>
               <Line>
-              <IconCon>
-              <EmailIcon/>
-              </IconCon>ketan.chavan@vit.edu.inketan.chavan@vit.edu.in</Line>
+                <IconCon>
+                  <EmailIcon />
+                </IconCon>
+                {email}
+              </Line>
               <Line>
-              <IconCon>
-              <PhoneIcon/>
-              </IconCon>0123456789</Line>
-              <LineLabel>Student</LineLabel>
+                <IconCon>
+                  <PhoneIcon />
+                </IconCon>
+                {phn}
+              </Line>
+              <LineLabel>{jobTitle}</LineLabel>
             </UserData>
-             <PrimaryLinkBtn onClick={signOut}>SignOut</PrimaryLinkBtn>
+            <PrimaryLinkBtn onClick={signOut}>SignOut</PrimaryLinkBtn>
           </ProfileCard>
         )}
-
       </>
     );
   };
@@ -206,18 +213,16 @@ const Light = ({
         <NavLink to="/">Home</NavLink>
       </NavLinkCon>
 
-      {userReducer?.jobTitle === "Student" ||
-      userReducer?.jobTitle === undefined ? null : (
+      {jobTitle === "Student" || jobTitle === undefined ? null : (
         <NavLinkCon>
           <NavLink exact to="/add">
             Add
           </NavLink>
         </NavLinkCon>
       )}
-      {userReducer?.jobTitle === "Student" ||
-      userReducer?.jobTitle === undefined ? null : (
+      {jobTitle === "Student" || jobTitle === undefined ? null : (
         <NavLinkCon>
-          <NavLink to="/department">Departments</NavLink>
+          <NavLink to="/departments">Departments</NavLink>
         </NavLinkCon>
       )}
 
@@ -228,45 +233,37 @@ const Light = ({
       <NavLinkCon>
         <NavLink to="/contact">Contact Us</NavLink>
       </NavLinkCon>
-
-      <NavLinkCon>
-        <NavLink to="/departments">Departments</NavLink>
-      </NavLinkCon>
     </NavLinks>,
 
-    <NavLinks key={2}>
-      {navbarItemList()}
-      {/* <img style={{ height: "40px" }} src={userIcon} alt={"UserIcon"} />{" "} */}
-      {/* <div style={{ display: "flex" }}>
-        <div>something smalll</div>
-        <div>something big</div>
-      </div>
-      */}
-    </NavLinks>,
+    <NavLinks key={2}>{navbarItemList()}</NavLinks>,
   ];
   const { showNavLinks, animation, toggleNavbar } = useAnimatedNavToggler();
   const collapseBreakpointCss =
     collapseBreakPointCssMap[collapseBreakpointClass];
 
-  const defaultLogoLink = (
-    <LogoLink href="/">
-      <img src={logo} alt="logo" />
-    </LogoLink>
-  );
-
-  logoLink = logoLink || defaultLogoLink;
+  logoSvg = logoSvg || logo;
 
   return (
     <Header className={className || "header-light"}>
       <DesktopNavLinks css={collapseBreakpointCss.desktopNavLinks}>
-        {logoLink}
+        <LogoLink>
+          <NavLink to="/">
+            <img src={logoSvg} css={[white && tw`text-white`]} alt="logo" />
+          </NavLink>
+        </LogoLink>
         {defaultLinks}
       </DesktopNavLinks>
 
       <MobileNavLinksContainer
-        css={collapseBreakpointCss.mobileNavLinksContainer}
+        css={`
+          ${collapseBreakpointCss.mobileNavLinksContainer}
+        `}
       >
-        {logoLink}
+        <LogoLink>
+          <NavLink to="/">
+            <img src={logoSvg} css={[white && tw`text-white`]} alt="logo" />
+          </NavLink>
+        </LogoLink>
         <MobileNavLinks
           initial={{ x: "150%", display: "none" }}
           animate={animation}

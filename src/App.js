@@ -1,21 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { history } from "./store";
 import { ConnectedRouter } from "connected-react-router";
 import { Redirect, Route, Switch } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { auth } from "firebase/index";
+import { useSelector } from "react-redux";
 import { Form } from "components/Form";
 import Home from "components/Home";
 import Login from "components/Login";
 import NoMatch from "components/NoMatch";
-import { SET_USER } from "constants/index";
-import { checkUserData } from "actions";
+
 import { Departments } from "components/Departments";
-import FiveColumnWithInputForm from "components/footers/footer";
+import AboutUs from "components/About";
+import Contact from "components/Contact";
 
 const App = () => {
-  const dispatch = useDispatch();
-
   const { userReducer } = useSelector((state) => {
     return state;
   });
@@ -39,7 +36,8 @@ const App = () => {
     <ConnectedRouter history={history}>
       <>
         <Switch>
-          <Route exact path="/f" component={FiveColumnWithInputForm} />
+          <Route exact path="/about" component={AboutUs} />
+          <Route exact path="/contact" component={Contact} />
           <Route exact path="/login" component={Login} />
 
           <Route exact path="/404" component={NoMatch}>
@@ -70,6 +68,9 @@ const App = () => {
           </Route>
 
           <Route exact path="/add">
+            <Form />
+          </Route>
+          {/* <Route exact path="/add">
             {userReducer?.jobTitle === "Student" ||
             userReducer?.jobTitle === undefined ? (
               <Redirect
@@ -81,7 +82,7 @@ const App = () => {
             ) : (
               <Form />
             )}
-          </Route>
+          </Route> */}
 
           <Route path="/departments">
             <Departments />

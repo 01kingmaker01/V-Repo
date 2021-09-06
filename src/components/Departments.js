@@ -1,28 +1,11 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { ReactComponent as RightIcon } from "images/rightArrow.svg";
 import "styles/departments.css";
 import { dep } from "Data";
-import styled from "styled-components";
-import tw from "twin.macro";
-import { Container as ContainerBase } from "components/misc/Layouts";
-
-import Header, {
-  NavLinkCon,
-  LogoLink,
-  NavToggle,
-  DesktopNavLinks,
-} from "components/headers/light.js";
-
-const StyledHeader = styled(Header)`
-  ${tw`pt-8 text-black px-10 max-w-none w-full`}
-  ${DesktopNavLinks} ${NavLinkCon}, ${LogoLink} {
-    ${tw`text-black hover:border-primary-500 hover:text-primary-500`}
-  }
-  ${NavToggle}.closed {
-    ${tw`text-black hover:text-primary-500`}
-  }
-`;
+import { StyledHeader } from "./Form";
+import Footer from "./footers/footer";
 
 export const Departments = () => {
   const [data] = useState(dep);
@@ -46,6 +29,7 @@ export const Departments = () => {
           );
         })}
       </section>
+      <Footer />
     </div>
   );
 };
